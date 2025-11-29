@@ -1,7 +1,7 @@
 
 
 
-# 🎯 YouTube Niche Analyzer
+#  YouTube Niche Analyzer
 
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
@@ -11,7 +11,7 @@
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/2fe537e3-1a46-40c3-803b-1905ec79946c" alt="Input Query" width="400"/>
@@ -20,15 +20,15 @@
 
 ---
 
-## 🚀 Features
+##  Features
 
-- 🔍 Search YouTube videos by keyword
-- 📊 Auto-calculate **SEO score** for each video
-- 🎯 Compute a **Niche Opportunity Score** using:
+-  Search YouTube videos by keyword
+-  Auto-calculate **SEO score** for each video
+-  Compute a **Niche Opportunity Score** using:
 
 ---
 
-## 📦 Installation
+##  Installation
 
 1. [Download source code.](https://github.com/kranoley/youtube-niche-analyzer/archive/refs/heads/main.zip)
 
@@ -44,7 +44,7 @@
 
 ---
 
-## ⚠️ Important Notes
+##  Important Notes
 - YouTube may temporarily throttle frequent requests. Avoid rapid repeated analyses.
 - Use responsibly and in compliance with YouTube’s [Terms of Service](https://www.youtube.com/t/terms).
 
