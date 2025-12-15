@@ -50,6 +50,39 @@
 
 ---
 
+## Development
+
+Install dependencies (recommended in a virtualenv):
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the GUI:
+
+```bash
+python main.py
+```
+
+Run tests (without pytest installed):
+
+```bash
+python scripts/run_tests.py
+```
+
+Or, if you have pytest available:
+
+```bash
+pytest -q
+```
+
+## Recent changes
+
+- Added validation, retries and logging to `core/youtube_api.py`.
+- Hardened `core/analyzer.py` with type checks and defensive handling.
+- Added unit tests and a lightweight test runner at `scripts/run_tests.py`.
+- Improved UI input validation and added Export/Cancel actions to `ui/app.py`.
+
 Made with ❤️
 
 

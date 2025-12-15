@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from tkinter import messagebox
 import threading
 import time
 from core.analyzer import seo_score, niche_opportunity_score, MAX_RESULTS, AVG_TIME_PER_VIDEO_SEC
@@ -55,8 +56,21 @@ class YouTubeAnalyzerApp(ctk.CTk):
     def start_analysis(self):
         query = self.query_entry.get().strip()
         if not query:
+            messagebox.showerror("Invalid input", "Please enter a search query to analyze.")
             return
         self.input_frame.grid_forget()
+        self._cancel_requested = False
+        self.start_button.configure(state="disabled")
+        # add cancel button
+        self.cancel_button = ctk.CTkButton(
+            self.input_frame,
+            text="Cancel",
+            command=self.request_cancel,
+            fg_color="#555555",
+            hover_color="#444444",
+            text_color="#FFFFFF"
+        )
+        # keep hidden until needed
 
         self.progress_frame = ctk.CTkFrame(self, fg_color="#2b2b2b")
         self.progress_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
@@ -82,10 +96,15 @@ class YouTubeAnalyzerApp(ctk.CTk):
 
         threading.Thread(target=self.run_analysis, args=(query,), daemon=True).start()
 
+    def request_cancel(self):
+        self._cancel_requested = True
+
     def run_analysis(self, query):
         start_time = time.time()
         try:
             videos = search_youtube_detailed(query, max_results=MAX_RESULTS, last_week_only=True)
+            if self._cancel_requested:
+                raise RuntimeError("Canceled by user")
             valid_videos = []
             for v in videos:
                 required = ["views", "likes", "comments", "duration", "date"]
@@ -100,6 +119,11 @@ class YouTubeAnalyzerApp(ctk.CTk):
                 views_list = []
 
                 for v in valid_videos:
+                    if self._cancel_requested:
+                        raise RuntimeError("Canceled by user")
+                    # update per-video progress
+                    idx = len(seo_scores) + 1
+                    self.after(0, lambda i=idx, total=len(valid_videos): self.progress_label.configure(text=f"Analyzing '{query}' — video {i}/{total}"))
                     subs = v.get("followers", 1000)
                     score = seo_score(v, subs)
                     if score is not None:
@@ -140,6 +164,11 @@ class YouTubeAnalyzerApp(ctk.CTk):
     def show_result(self, result_text):
         self.progress_bar.stop()
         self.progress_frame.grid_forget()
+        # re-enable start button for new analyses
+        try:
+            self.start_button.configure(state="normal")
+        except Exception:
+            pass
 
         self.result_frame = ctk.CTkFrame(self, fg_color="#2b2b2b")
         self.result_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
@@ -166,6 +195,25 @@ class YouTubeAnalyzerApp(ctk.CTk):
             text_color="#000000"
         )
         self.restart_button.grid(row=1, column=0, pady=(0, 20))
+
+        self.export_button = ctk.CTkButton(
+            self.result_frame,
+            text="Export CSV",
+            command=lambda: self._export_results(result_text),
+            fg_color="#555555",
+            hover_color="#444444",
+            text_color="#FFFFFF"
+        )
+        self.export_button.grid(row=1, column=1, pady=(0, 20), padx=(10, 0))
+
+    def _export_results(self, text):
+        fname = f"analysis_export.txt"
+        try:
+            with open(fname, "w", encoding="utf-8") as f:
+                f.write(text)
+            messagebox.showinfo("Exported", f"Results exported to {fname}")
+        except Exception as e:
+            messagebox.showerror("Export failed", str(e))
 
     def restart(self):
         if hasattr(self, 'result_frame'):
