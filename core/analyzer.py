@@ -3,11 +3,13 @@ from datetime import datetime
 from typing import Optional, Dict, Any
 import logging
 
+
 logger = logging.getLogger(__name__)
 
 
 AVG_TIME_PER_VIDEO_SEC = 3.81
 MAX_RESULTS = 20
+
 
 
 def niche_opportunity_score(avg_seo: float, avg_views: float, avg_duration_sec: float, max_possible_views: float = 50000.0) -> float:
