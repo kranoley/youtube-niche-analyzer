@@ -1,9 +1,10 @@
+import time
+import threading
 import customtkinter as ctk
 from tkinter import messagebox
-import threading
-import time
 from core.analyzer import seo_score, niche_opportunity_score, MAX_RESULTS, AVG_TIME_PER_VIDEO_SEC
 from core.youtube_api import search_youtube_detailed
+
 
 
 class YouTubeAnalyzerApp(ctk.CTk):
