@@ -6,7 +6,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
 AVG_TIME_PER_VIDEO_SEC = 3.81
 MAX_RESULTS = 20
 
