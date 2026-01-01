@@ -11,6 +11,7 @@ except Exception:  # pragma: no cover - runtime optional dependency
 logger = logging.getLogger(__name__)
 
 
+
 def _validate_search_args(query: str, max_results: int):
     if not isinstance(query, str) or not query.strip():
         raise ValueError("query must be a non-empty string")
